@@ -1,21 +1,23 @@
 import React, { useEffect } from 'react';
 
 export default function TimerDisplay({ timeLeft, totalTime, mode }) {
+    // 将秒数转换为供人类阅读的 分:秒 格式，例如 25:00
     const minutes = Math.floor(timeLeft / 60);
     const seconds = timeLeft % 60;
-
     const formattedTime = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 
-    // Calculate SVG stroke-dashoffset for the progress circle
+    // 计算 SVG 圆环进度条的偏移量 (stroke-dashoffset)
+    // 根据当前剩余时间和总时间的比例进行计算
     const radius = 130;
     const circumference = 2 * Math.PI * radius;
     const strokeDashoffset = circumference - (timeLeft / totalTime) * circumference;
 
+    // 当计时器更新时，同步更新浏览器的标签网页标题
     useEffect(() => {
-        document.title = `${formattedTime} - Pomodoro`;
+        document.title = `${formattedTime} - 番茄钟`;
     }, [formattedTime]);
 
-    // Set the correct accent color based on mode
+    // 根据当前所处的模式获取进度条的颜色
     const getStrokeColor = () => {
         switch (mode) {
             case 'pomodoro': return 'var(--accent-pomodoro)';
